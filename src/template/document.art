@@ -1,0 +1,10 @@
+<div class="CloudPlayback-document-wrap" style="overflow: hidden">
+    <div class="CloudPlayback-Draw-full">
+        <span class="CloudPlayback-icon-content">{{@ icons.full }}</span>
+    </div>
+    <iframe
+        {{ if iframeUrl }}src="{{ iframeUrl }}"{{ /if }}
+        id="shareIframe"
+        class="iframeStyle"
+    ></iframe>
+</div>

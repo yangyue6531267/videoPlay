@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="http://simupdate.263.net/CloudPlayback/CloudPlayback.min.js"></script> -->
+    <!-- <script src="CloudPlayback.min.js"></script> -->
+    <script src="https://sdk.263cv.net/CloudPlayback/CloudPlayback.min.js"></script>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            /* background-color: #000; */
+        }
+
+        .isMobile{
+            display: flex;
+            flex-direction: column;
+        }
+        #CloudPlayback-container {
+            width: 100%;
+            height: 500px;
+            margin: 0;
+            float: left;
+        }
+
+        #CloudPlayback-document-container {
+            width: 100%;
+            height: 500px;
+            margin: 0;
+            float: left;
+            /* border-bottom: 1px solid #eee; */
+        }
+
+        .log-container {
+            background-color: #eee;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="isPc">
+        <div id="CloudPlayback-container"></div>
+        <div id="CloudPlayback-document-container"></div>
+    </div>
+    
+    <br clear="both">
+    <!-- <div id="CloudPlayback-controller-container" class="CloudPlayback"></div> -->
+    <br clear="both">
+    <pre class="log-container"></per>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js"></script> -->
+    <!-- <script src="https://static.gensee.com/webcast/static/sdk/js/hls.min.js"></script> -->
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/stats.js/16/Stats.min.js" type="application/javascript"></script>
+    <!-- <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/stats.js/17/Stats.js"></script> -->
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <!-- <script src="CloudPlayback.js"></script> -->
+    <script src="./CloudPlayback.min.js"></script>
+
+    <script>
+        // stats.js: JavaScript Performance Monitor
+        // const stats = new Stats();
+        // stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+        // document.body.appendChild(stats.dom);
+        // function animate() {
+        //     stats.begin();
+        //     // monitored code goes here
+        //     stats.end();
+
+        //     requestAnimationFrame(animate);
+        // }
+        // requestAnimationFrame(animate);
+        function IsPC() {
+            var userAgentInfo = navigator.userAgent;
+            console.log(navigator.userAgent);
+            var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");
+            var flag = true;
+            for (var v = 0; v < Agents.length; v++) {
+                if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }
+            }
+            return flag;
+        }
+        if (IsPC()) {
+            console.log("isPc");
+            document.querySelector('#isPc').className='isPc'
+            document.querySelector('#CloudPlayback-container').style.width='50%'
+            document.querySelector('#CloudPlayback-document-container').style.width='50%'
+        }else{
+            console.log("isMobile");
+            document.querySelector('#isPc').className='isMobile'
+            document.querySelector('#CloudPlayback-container').style.width='100%'
+            document.querySelector('#CloudPlayback-document-container').style.width='100%'
+        }
+        new VConsole();
+        const startTime = Date.now();
+        function log(message) {
+            const logContainer = document.querySelector(".log-container");
+            let logText = logContainer.innerHTML;
+            if (logText.length) {
+                logText += '\n';
+            }
+            const timestamp = (Date.now() - startTime) / 1000;
+            const newMessage = timestamp + ' | ' + message;
+            logText += newMessage;
+            logContainer.innerHTML = logText;
+        }
+
+        const cloudPlayback = new CloudPlayback({
+            container: document.getElementById('CloudPlayback-container'),
+            documentContainer: document.getElementById('CloudPlayback-document-container'),
+            controllerContainer: document.getElementById('CloudPlayback-controller-container'),
+            // confId: "560f2a021c4f4795aa18c3ae0aa7d666",
+            recordId:'1541666072434839577',
+            passCode: '222222',
+            userId: '',
+            nickName: '123456df d !@#!@#@$#@$',
+            Remarks:'1111111111111111111111111111111111111111',
+            // hotkey: true,
+            preload: true,
+            isIframeShow:true,
+            theme: "#01beff",
+            lang: "zh-cn",
+            preload: 'none',
+            loop: true,
+            highlight: [
+                {
+                    time: 20,
+                    text: '这是第 20 秒',
+                },
+                {
+                    time: 120,
+                    text: '这是 2 分钟',
+                },
+                {
+                    time: 1500,
+                    text: '这是 1500',
+                },
+            ],
+            pluginOptions: {
+                hls: {
+                    enableWorker: false,
+                    isLive: false
+                },
+            },
+        });
+
+        for (let index = 0; index < cloudPlayback.events.genseeEvents.length; index++) {
+            const element = cloudPlayback.events.genseeEvents[index];
+            cloudPlayback.on(element, function (text) {
+                log("【gensee】[" + element + "]：" + JSON.stringify((text ? text : "")));
+            })
+        }
+
+        for (let index = 0; index < cloudPlayback.events.playerEvents.length; index++) {
+            const element = cloudPlayback.events.playerEvents[index];
+            cloudPlayback.on(element, function (text) {
+                log("【player】[" + element + "]：" + JSON.stringify((text ? text : "")));
+            })
+        }
+        for (let index = 0; index < cloudPlayback.events.userEvents.length; index++) {
+            const element = cloudPlayback.events.userEvents[index];
+            cloudPlayback.on(element, function (text) {
+                log("【userEvents】[" + element + "]:" + JSON.stringify(text ? text : ""));
+            })
+        }
+        cloudPlayback.init();
+
+        console.log(cloudPlayback)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+.CloudPlayback-mask {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: none;
+    &.CloudPlayback-mask-show {
+        display: block;
+    }
+}
+
+.CloudPlayback-video-wrap {
+    position: relative;
+    background: #000;
+    font-size: 0;
+    width: 100%;
+    height: 100%;
+    .CloudPlayback-video {
+        width: 100%;
+        height: 100%;
+        display: none;
+    }
+    .CloudPlayback-video-current {
+        display: block;
+    }
+    .CloudPlayback-video-prepare {
+        display: none;
+    }
+}

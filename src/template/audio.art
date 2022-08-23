@@ -1,0 +1,10 @@
+
+<audio controls
+    class="CloudPlayback-audio-current"
+    style="visibility: collapse;"
+    {{ if url }}
+        src="{{ url }}"
+    {{ /if }}
+    
+>
+</audio>

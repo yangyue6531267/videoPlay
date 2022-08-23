@@ -1,0 +1,26 @@
+<div class="CloudPlayback-mask"></div>
+<div class="CloudPlayback-video-wrap">
+    {{ include './video.art' video }}
+    {{ include './audio.art' audio}}
+    {{ if options.logo }}
+    <div class="CloudPlayback-logo">
+        <img src="{{ options.logo }}">
+    </div>
+    {{ /if }}
+    <div class="CloudPlayback-bezel">
+        <span class="CloudPlayback-bezel-icon"></span>
+        <span class="diplayer-loading-icon">{{@ icons.loading }}</span>
+    </div>
+</div>
+<div class="CloudPlayback-controller-default"></div>
+<div class="CloudPlayback-menu">
+    {{ each options.contextmenu }}
+        <div class="CloudPlayback-menu-item">
+            <a{{ if $value.link }} target="_blank"{{ /if }} href="{{ $value.link || 'javascript:void(0);' }}">{{ tran($value.text) }}</a>
+        </div>
+    {{ /each }}
+</div>
+<div class="CloudPlayback-notice"></div>
+<button class="CloudPlayback-mobile-play">
+    {{@ icons.play }}
+</button>
